@@ -1,51 +1,67 @@
 import { projects } from "@/app/components/project_details";
 import Link from "next/link";
-import { use } from "react"; // required in Next.js 13.5+ for async params
+import { FaArrowLeft, FaExternalLinkAlt } from "react-icons/fa";
+import { use } from "react";
 
 export default function ProjectPage({ params }) {
-  // unwrap params using React.use
-  const { slug } = use(params); // <- this fixes the Promise issue
-
+  const { slug } = use(params);
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     return (
-      <div className="p-8 text-center text-gray-500">Project not found.</div>
+      <div className="glass-panel p-10 text-center text-slate-300">
+        Project not found.{" "}
+        <Link href="/" className="text-cyan-300 underline">
+          Back home
+        </Link>
+      </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-6">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
-        <p className="text-gray-600">{project.date}</p>
-      </header>
+    <article className="space-y-10">
+      <header className="glass-panel p-8 lg:p-10 space-y-4">
+        <p className="accent-pill w-fit">Case study</p>
+        <div className="flex flex-col gap-3">
+          <h1 className="text-3xl lg:text-4xl font-semibold text-white">
+            {project.title}
+          </h1>
+          <p className="text-slate-300">{project.date}</p>
+        </div>
 
-      <section className="mb-6">
-        <p className="text-lg leading-relaxed text-gray-800 whitespace-pre-line">
-          {project.content}
-        </p>
-      </section>
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/15 px-3 py-1 text-xs uppercase tracking-wider text-slate-200"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-      {project.repo && (
-        <section className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Repo</h3>
+        {project.repo && (
           <a
             href={project.repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-cyan-100"
           >
-            {project.repo}
+            View repository <FaExternalLinkAlt className="text-xs" />
           </a>
-        </section>
-      )}
+        )}
+      </header>
 
-      <Link href="/">
-        <span className="text-teal-600 font-semibold cursor-pointer hover:underline">
-          ← Back to Projects
-        </span>
+      <section className="glass-panel p-8 lg:p-10 text-base leading-7 text-slate-100 whitespace-pre-line">
+        {project.content}
+      </section>
+
+      <Link
+        href="/"
+        className="inline-flex items-center gap-3 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
+      >
+        <FaArrowLeft /> Back to all projects
       </Link>
-    </div>
+    </article>
   );
 }

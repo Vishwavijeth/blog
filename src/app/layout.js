@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Vishwa's Blog",
   description: "A simple blog with Next.js and Tailwind",
+  icons: {
+    icon: "/globe.svg",
+    shortcut: "/globe.svg",
+    apple: "/globe.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
